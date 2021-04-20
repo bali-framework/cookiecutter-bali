@@ -4,9 +4,10 @@ from pydantic.env_settings import BaseSettings
 
 class Settings(BaseSettings):
     class Config:
+        case_sensitive = True
         env_file = '.env'
 
-    TITLE: str = "Financial"
+    TITLE: str = {{cookiecutter.repo_name}}
     DATABASE: str
 
 

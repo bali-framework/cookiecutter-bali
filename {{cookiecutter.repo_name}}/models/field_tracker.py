@@ -5,7 +5,7 @@ import uuid
 
 from bali.db import db
 from loguru import logger
-from sqlalchemy import Column, Integer, String, JSON
+from sqlalchemy import JSON, Column, Integer, String
 from sqlalchemy.event import listens_for
 from sqlalchemy.util.langhelpers import symbol
 
@@ -27,7 +27,7 @@ class FieldTracker(db.BaseModel):
             @listens_for(i, "set")
             @logger.catch
             def create(target, value, oldvalue, initiator):
-                if oldvalue is symbol('NO_VALUE'):
+                if oldvalue is symbol("NO_VALUE"):
                     return value
 
                 db.session.add(
