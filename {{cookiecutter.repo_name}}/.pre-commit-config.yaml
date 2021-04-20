@@ -1,0 +1,35 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+    - id: check-case-conflict
+    - id: check-docstring-first
+    - id: check-merge-conflict
+    - id: check-json
+    - id: check-yaml
+    - id: debug-statements
+    - id: detect-private-key
+    - id: end-of-file-fixer
+    - id: mixed-line-ending
+      args: [--fix=lf]
+    - id: no-commit-to-branch
+      args: [-b=master, -b=test, -b=develop, -b=main, -b=dev]
+    - id: requirements-txt-fixer
+    - id: trailing-whitespace
+      args: [--markdown-linebreak-ext=md]
+
+  - repo: https://github.com/ambv/black
+    rev: 20.8b1
+    hooks:
+    - id: black
+      language_version: python3
+
+  - repo: https://github.com/timothycrosley/isort
+    rev: 4.3.21
+    hooks:
+    - id: isort
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.9.1
+    hooks:
+      - id: flake8
