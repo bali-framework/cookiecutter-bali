@@ -1,5 +1,6 @@
 -r requirements.txt
 coverage
 git+https://github.com/JoshYuJump/bali-cli.git@v0.4.2#egg=bali-cli
+mixer
 pytest
 pytest-mock
