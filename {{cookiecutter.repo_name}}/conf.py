@@ -7,7 +7,7 @@ class Settings(BaseSettings):
         case_sensitive = True
         env_file = '.env'
 
-    TITLE: str = {{cookiecutter.repo_name}}
+    TITLE: str = "{{cookiecutter.repo_name}}"
     DATABASE: str
 
 
