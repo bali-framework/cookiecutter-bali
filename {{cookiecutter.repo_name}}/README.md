@@ -1,4 +1,4 @@
-# Make Develop Env using Python 3.8
+# Make Develop Env using Python 3.7
 ```shell
 make env
 ```

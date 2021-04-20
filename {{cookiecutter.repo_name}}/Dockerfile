@@ -2,7 +2,7 @@
 # = Base Image
 # ===========
 
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
 # ===========
 # = Author
