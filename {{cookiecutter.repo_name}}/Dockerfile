@@ -44,4 +44,4 @@ ENV PYTHONPATH="$PYTHONPATH:/app/clients/intermediates"
 ENV PYTHONPATH="$PYTHONPATH:/app/services/rpc"
 
 # Disable grpc dynamic import
-ENV GRPC_PYTHON_DISABLE_DYNAMIC_STUBS="1"
+ENV GRPC_PYTHON_DISABLE_DYNAMIC_STUBS 1
