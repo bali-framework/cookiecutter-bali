@@ -1,6 +1,6 @@
 env:
 	rm -rf venv
-	python3.7 -m venv venv
+	python3 -m venv venv
 	. venv/bin/activate \
 	&& pip3 install wheel \
 	&& pip3 install -r requirements_dev.txt \
