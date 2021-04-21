@@ -10,3 +10,7 @@ alembic revision --autogenerate
 ```shell
 alembic upgrade head
 ```
+# Start Testing
+```shell
+tox
+```

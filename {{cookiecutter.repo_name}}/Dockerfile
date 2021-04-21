@@ -8,7 +8,7 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 # = Author
 # ===========
 
-LABEL maintainer="finture"
+LABEL maintainer="bali"
 
 # ===========
 # = Initiate Project
