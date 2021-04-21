@@ -15,3 +15,14 @@ testpaths = ["tests"]
 [tool.coverage.run]
 branch = true
 omit = ["tests/*", "alembic/*"]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = True
+envlist = py37
+
+[testenv]
+deps = -rrequirements_dev.txt
+commands = pytest
+"""
