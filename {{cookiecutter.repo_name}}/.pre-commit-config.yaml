@@ -1,7 +1,7 @@
 exclude: alembic/
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.4.0
+    rev: v3.4.0
     hooks:
     - id: check-case-conflict
     - id: check-docstring-first
@@ -19,18 +19,18 @@ repos:
     - id: trailing-whitespace
       args: [--markdown-linebreak-ext=md]
 
-  - repo: https://github.com/ambv/black
+  - repo: https://github.com/psf/black
     rev: 20.8b1
     hooks:
     - id: black
       language_version: python3
 
-  - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.8.0
     hooks:
     - id: isort
 
-  - repo: https://github.com/pycqa/flake8
+  - repo: https://github.com/PyCQA/flake8
     rev: 3.9.1
     hooks:
       - id: flake8
