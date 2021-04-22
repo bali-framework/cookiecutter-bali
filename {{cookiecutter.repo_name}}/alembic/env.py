@@ -6,16 +6,18 @@ from alembic import context
 from bali.core import db
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from core.config import settings
 
-db.connect(settings.SQLALCHEMY_DATABASE_URI)
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from conf import settings
+
+db.connect(settings.DATABASE)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
 config = context.config
-config.set_main_option('sqlalchemy.url', settings.SQLALCHEMY_DATABASE_URI)
+config.set_main_option('sqlalchemy.url', settings.DATABASE)
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
