@@ -1,0 +1,9 @@
+syntax = "proto3";
+package {{cookiecutter.repo_name}};
+
+import "google/protobuf/struct.proto";
+
+service {{cookiecutter.repo_name|title}}Service {
+  // Generic
+  // Customize
+}
