@@ -15,7 +15,6 @@ repos:
     - id: mixed-line-ending
       args: [--fix=lf]
     - id: no-commit-to-branch
-      args: [-b=master, -b=test, -b=develop, -b=main, -b=dev]
     - id: requirements-txt-fixer
     - id: trailing-whitespace
       args: [--markdown-linebreak-ext=md]
