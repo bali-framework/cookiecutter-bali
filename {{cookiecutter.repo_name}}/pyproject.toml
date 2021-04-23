@@ -9,7 +9,7 @@ known_third_party = ["fastapi", "pydantic", "starlette", "SQLAlchemy", "uvicorn"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q"
+addopts = "-s"
 testpaths = ["tests"]
 
 [tool.coverage.run]
