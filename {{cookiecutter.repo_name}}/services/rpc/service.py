@@ -4,7 +4,7 @@ import grpc
 from bali.interceptors import ProcessInterceptor
 from loguru import logger
 
-from services.rpc import {{cookiecutter.repo_name}}_pb2 as pb2, {{cookiecutter.repo_name}}_pb2_grpc as pb2_grpc, {{cookiecutter.repo_name}}_schema as schema
+from services.rpc import {{cookiecutter.repo_name}}_pb2 as pb2, {{cookiecutter.repo_name}}_pb2_grpc as pb2_grpc
 
 
 class {{cookiecutter.repo_name|title}}Service(pb2_grpc.{{cookiecutter.repo_name|title}}ServiceServicer):

@@ -9,5 +9,4 @@ cookiecutter https://github.com/Ed-XCF/cookiecutter-bali.git
 After you enter the venv:
 ```shell
 bali build
-pb2py services/rpc/{{repo_name}}_pb2.py > services/rpc/{{repo_name}}_schema.py
 ```
