@@ -33,6 +33,7 @@ RUN pip install -r requirements.txt \
     && pip install supervisor py-spy \
     && wget https://github.com/apache/rocketmq-client-cpp/releases/download/2.0.0/rocketmq-client-cpp-2.0.0.amd64.deb \
     && dpkg -i rocketmq-client-cpp-2.0.0.amd64.deb
+    && locale-gen id_ID.UTF-8
 
 # Add Tini
 ENV TINI_VERSION v0.18.0
