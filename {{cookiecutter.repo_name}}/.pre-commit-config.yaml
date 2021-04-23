@@ -1,6 +1,7 @@
 exclude: >
   (?x)^(
       alembic/.*|
+      clients/.*|
       .*/__init__.py|
       .*_pb2.py|
       .*_pb2_grpc.py
