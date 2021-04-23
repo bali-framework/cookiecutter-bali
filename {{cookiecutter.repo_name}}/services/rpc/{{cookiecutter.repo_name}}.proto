@@ -1,5 +1,51 @@
 syntax = "proto3";
 package {{cookiecutter.repo_name}};
 
+import "google/protobuf/struct.proto";
+
 service {{cookiecutter.repo_name|title}}Service {
+  // Generic
+
+  // Customize
+
 }
+
+// Generic
+message GetRequest {
+  int32 uuid = 1;
+}
+
+message ListRequest {
+  google.protobuf.Struct filters = 1;
+  int32 offset = 2;
+  int32 limit = 3;
+  repeated string ordering = 4;
+}
+
+message CreateRequest {
+  google.protobuf.Struct data = 1;
+}
+
+message UpdateRequest {
+  int32 uuid = 1;
+  google.protobuf.Struct data = 2;
+}
+
+message DeleteRequest {
+  int32 uuid = 1;
+}
+
+message ItemResponse {
+  google.protobuf.Struct data = 1;
+}
+
+message ListResponse {
+  repeated google.protobuf.Struct data = 1;
+  int32 count = 2;
+}
+
+message ResultResponse {
+  bool result = 1;
+}
+
+// Customize
