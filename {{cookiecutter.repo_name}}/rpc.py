@@ -5,7 +5,7 @@ from bali.interceptors import ProcessInterceptor
 from loguru import logger
 
 from conf import settings
-from services.rpc import transaction_pb2_grpc as pb2_grpc
+from services.rpc import {{cookiecutter.repo_name}}_pb2_grpc as pb2_grpc
 from services.rpc.service import Service
 
 def serve():
