@@ -1,11 +1,10 @@
-import json
-import time
 import threading
+import time
 from typing import List, Union
 
+from loguru import logger
 from mq_http_sdk.mq_client import MQClient, MQExceptionBase
 from mq_http_sdk.mq_consumer import Message
-from loguru import logger
 
 from conf import settings
 
@@ -16,6 +15,7 @@ class BaseConsumer(threading.Thread):
     instance: str
     topic: str
     group: str
+    message_tag: str = ""
     batch_size: int = 16
     wait_seconds: int = 30
     need_ack: bool = True
@@ -27,13 +27,19 @@ class BaseConsumer(threading.Thread):
 
     def __init__(self):
         super().__init__()
-        client = MQClient(settings.MQ_HOST, settings.MQ_ACCESS_ID, settings.MQ_ACCESS_KEY)
-        self.consumer = client.get_consumer(settings.MQ_INSTANCE, self.topic, self.group)
+        client = MQClient(
+            settings.MQ_HOST, settings.MQ_ACCESS_ID, settings.MQ_ACCESS_KEY
+        )
+        self.consumer = client.get_consumer(
+            settings.MQ_INSTANCE, self.topic, self.group, self.message_tag
+        )
 
     def run(self) -> None:
         while True:
             try:
-                received: List[Message] = self.consumer.consume_message(self.batch_size, self.wait_seconds)
+                received: List[Message] = self.consumer.consume_message(
+                    self.batch_size, self.wait_seconds
+                )
             except MQExceptionBase as e:
                 if e.type != "MessageNotExist":
                     logger.exception("Consume msg failed: {}", repr(e))
@@ -41,11 +47,12 @@ class BaseConsumer(threading.Thread):
                 receipt_handle_list = []
                 for i in received:
                     logger.debug("Received msg: {}", vars(i))
-                    msg_body = json.loads(i.message_body)
                     try:
-                        self.onmessage(msg_body)
+                        self.onmessage(i)
                     except Exception as e:
-                        logger.exception("Exception raised when handle msg: {}", repr(e))
+                        logger.exception(
+                            "Exception raised when handle msg: {}", repr(e)
+                        )
                     else:
                         if self.need_ack:
                             receipt_handle_list.append(i.receipt_handle)
@@ -58,5 +65,5 @@ class BaseConsumer(threading.Thread):
             finally:
                 time.sleep(self.consume_interval)
 
-    def onmessage(self, msg) -> None:
+    def onmessage(self, msg: Message) -> None:
         raise NotImplementedError()
