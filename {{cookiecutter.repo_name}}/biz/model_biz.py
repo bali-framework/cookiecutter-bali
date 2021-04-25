@@ -7,10 +7,10 @@ from sqlalchemy.sql.functions import func
 
 from consts import ALWAYS_EXCLUDE
 
-__all__ = ["ModelResource"]
+__all__ = ["ModelBiz"]
 
 
-class ModelResource:
+class ModelBiz:
     model: db.BaseModel = None
     model_schema: Type[BaseModel] = None
 
