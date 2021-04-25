@@ -1,4 +1,5 @@
 env:
+	locale-gen id_ID.UTF-8
 	rm -rf venv
 	python3 -m venv venv
 	. venv/bin/activate \

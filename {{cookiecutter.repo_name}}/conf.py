@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     DATABASE: str
     RPC_PORT: int
     RPC_THREAD_POOL_SIZE: int
+    MQ_HOST: str
+    MQ_ACCESS_ID: str
+    MQ_ACCESS_KEY: str
+    MQ_INSTANCE: str
 
 
 settings = Settings()
