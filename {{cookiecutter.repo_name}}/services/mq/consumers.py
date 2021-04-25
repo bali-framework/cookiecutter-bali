@@ -1,9 +1,9 @@
 from services.mq.base_consumer import BaseConsumer
 
 
-class Mop(BaseConsumer):
-    topic = "mop-tag-topic"
-    group = "GID_MOP_2"
+class Print(BaseConsumer):
+    topic = "example"
+    group = "example"
 
     def onmessage(self, msg) -> None:
         print(msg)
