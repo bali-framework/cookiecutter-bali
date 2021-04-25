@@ -1,9 +1,11 @@
+from loguru import logger
+
 from services.mq.base_consumer import BaseConsumer
 
 
-class Print(BaseConsumer):
+class Info(BaseConsumer):
     topic = "example"
     group = "example"
 
     def onmessage(self, msg) -> None:
-        print(msg)
+        logger.info(msg)
