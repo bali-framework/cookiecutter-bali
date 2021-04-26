@@ -12,7 +12,6 @@ __all__ = ["BaseConsumer"]
 
 
 class BaseConsumer(threading.Thread):
-    instance: str
     topic: str
     group: str
     message_tag: str = ""
