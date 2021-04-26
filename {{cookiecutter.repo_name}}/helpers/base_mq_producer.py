@@ -3,8 +3,10 @@ from mq_http_sdk.mq_producer import TopicMessage
 
 from conf import settings
 
+__all__ = ["BaseProducer"]
 
-class Producer:
+
+class BaseProducer:
     instance: str
     topic: str
 
