@@ -16,13 +16,6 @@ LABEL maintainer="bali"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Define id_ID.UTF-8
-ENV LANGUAGE id_ID.UTF-8
-ENV LANG id_ID.UTF-8
-ENV LC_ALL id_ID.UTF-8
-ENV LC_CTYPE id_ID.UTF-8
-ENV LC_MESSAGES id_ID.UTF-8
-
 # Define timezone
 ENV TZ Asia/Jakarta
 
