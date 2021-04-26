@@ -15,5 +15,5 @@ class Producer:
         self.producer = client.get_producer(self.instance, self.topic)
 
     def publish(self, msg: str, tag: str = None) -> None:
-        msg_ = TopicMessage(msg, tag)
+        msg_ = TopicMessage(msg, tag or "")
         self.producer.publish_message(msg_)
