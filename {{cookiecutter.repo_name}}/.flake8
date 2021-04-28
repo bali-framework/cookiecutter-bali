@@ -1,3 +1,4 @@
 [flake8]
+ignore = B008,W503
 max-line-length = 88
 extend-ignore = E203
