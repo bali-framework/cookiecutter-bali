@@ -1,6 +1,6 @@
 # Make Develop Env
 ```shell
-sudo make env
+make env
 ```
 # Make Migration
 ```shell
