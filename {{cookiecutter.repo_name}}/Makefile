@@ -9,6 +9,8 @@ env:
 
 docker:
 	docker build --rm --build-arg DEPS=requirements_dev . -t {{cookiecutter.repo_name}}
+	pip3 install pre-commit
+	pre-commit install
 
 migration:
 	alembic revision --autogenerate
