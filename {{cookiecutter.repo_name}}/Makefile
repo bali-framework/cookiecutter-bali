@@ -8,7 +8,7 @@ env:
 	&& pre-commit install
 
 docker:
-	docker build --rm . -t financial
+	docker build --rm . -t {{cookiecutter.repo_name}}
 
 migration:
 	alembic revision --autogenerate
