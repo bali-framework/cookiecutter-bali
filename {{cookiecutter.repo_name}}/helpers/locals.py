@@ -9,7 +9,7 @@ class LoginUser:
     _login_user = _LoginUser()
 
     @classmethod
-    def set_login_user_uuid(cls, user_uuid: str) -> None:
+    def set_login_user_uuid(cls, user_uuid: Optional[str]) -> None:
         cls._login_user.uuid = user_uuid
 
     @classmethod
