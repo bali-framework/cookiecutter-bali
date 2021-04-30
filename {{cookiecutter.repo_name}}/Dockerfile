@@ -16,26 +16,18 @@ LABEL maintainer="bali"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Define timezone
-ENV TZ Asia/Jakarta
+COPY . /opt/project
+WORKDIR /opt/project
 
-COPY . /app
-WORKDIR /app
-
-RUN pip install -r requirements.txt \
+RUN apt-get clean \
+    && apt-get update \
+    && apt-get install -y tzdata locales-all vim tini \
     && pip install supervisor py-spy \
-    && wget https://github.com/apache/rocketmq-client-cpp/releases/download/2.0.0/rocketmq-client-cpp-2.0.0.amd64.deb \
-    && dpkg -i rocketmq-client-cpp-2.0.0.amd64.deb \
-    && locale-gen id_ID.UTF-8
-
-# Add Tini
-ENV TINI_VERSION v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
+    && pip install -r requirements.txt
 
 # Add grpc dir to PYTHONPATH
-ENV PYTHONPATH="$PYTHONPATH:/app/clients/intermediates"
-ENV PYTHONPATH="$PYTHONPATH:/app/services/rpc"
+ENV PYTHONPATH="$PYTHONPATH:/opt/project/clients/intermediates"
+ENV PYTHONPATH="$PYTHONPATH:/opt/project/services/rpc"
 
 # Disable grpc dynamic import
 ENV GRPC_PYTHON_DISABLE_DYNAMIC_STUBS 1

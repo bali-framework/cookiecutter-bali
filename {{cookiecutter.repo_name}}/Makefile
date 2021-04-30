@@ -6,3 +6,12 @@ env:
 	&& pip3 install -r requirements_dev.txt \
 	&& pip3 install pre-commit \
 	&& pre-commit install
+
+docker:
+	docker build --rm . -t financial
+
+migration:
+	alembic revision --autogenerate
+
+migrate:
+	alembic upgrade head

@@ -1,21 +1,25 @@
-# loguru log example
+# Loguru usage example
 ```python
 from loguru import logger
 logger.info("Hello {}", "World")
 ```
-# Make Develop Env
+# Make develop env
 ```shell
 make env
 ```
-# Make Migration
+# Also, you can develop with docker interpreter
 ```shell
-alembic revision --autogenerate
+make docker
 ```
-# Make Migrate
+# Make migration
 ```shell
-alembic upgrade head
+make migration
 ```
-# Start Testing
+# Make migrate
+```shell
+make migrate
+```
+# Make testing
 ```shell
 tox
 ```
