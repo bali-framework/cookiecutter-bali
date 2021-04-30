@@ -23,7 +23,7 @@ make migrate
 ```shell
 tox
 ```
-# If build orjson, ujson dependencies failed
+# If build orjson, ujson failed
 ```shell
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 rustup default nightly
