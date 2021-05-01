@@ -7,9 +7,9 @@ env:
 	&& pre-commit install
 
 docker:
-	docker build --rm --build-arg DEPS=requirements_dev . -t {{cookiecutter.repo_name}}
 	pip3 install pre-commit git+https://github.com/Ed-XCF/bali-cli.git@v0.5.7#egg=bali-cli
 	pre-commit install
+	docker build --rm --build-arg DEPS=requirements_dev . -t {{cookiecutter.repo_name}}
 
 migration:
 	alembic revision --autogenerate
