@@ -2,14 +2,13 @@ env:
 	rm -rf venv
 	python3 -m venv venv
 	. venv/bin/activate \
-	&& pip3 install wheel \
+	&& pip3 install wheel pre-commit git+https://github.com/Ed-XCF/bali-cli.git@v0.5.7#egg=bali-cli \
 	&& pip3 install -r requirements_dev.txt \
-	&& pip3 install pre-commit \
 	&& pre-commit install
 
 docker:
 	docker build --rm --build-arg DEPS=requirements_dev . -t {{cookiecutter.repo_name}}
-	pip3 install pre-commit
+	pip3 install pre-commit git+https://github.com/Ed-XCF/bali-cli.git@v0.5.7#egg=bali-cli
 	pre-commit install
 
 migration:
