@@ -25,4 +25,6 @@ envlist = py37
 [testenv]
 deps = -rrequirements_dev.txt
 commands = pytest
+setenv =
+    PYTHONPATH = {toxinidir}/clients/intermediates:{toxinidir}/services/rpc
 """
