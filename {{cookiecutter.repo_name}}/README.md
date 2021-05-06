@@ -8,7 +8,7 @@ logger.info("Hello {}", "World")
 ```shell
 make env
 ```
-# Also, you can develop with docker interpreter
+# Also, you can develop with docker
 ```shell
 make docker
 ```
