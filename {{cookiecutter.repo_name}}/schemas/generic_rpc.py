@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from pydantic import BaseModel, Field
 
@@ -8,11 +8,11 @@ class CreateRequest(BaseModel):
 
 
 class DeleteRequest(BaseModel):
-    uuid: int = Field(default_factory=int)
+    uuid: str = Field(default_factory=str)
 
 
 class GetRequest(BaseModel):
-    uuid: int = Field(default_factory=int)
+    uuid: str = Field(default_factory=str)
 
 
 class ItemResponse(BaseModel):
@@ -36,5 +36,5 @@ class ResultResponse(BaseModel):
 
 
 class UpdateRequest(BaseModel):
-    uuid: int = Field(default_factory=int)
+    uuid: str = Field(default_factory=str)
     data: Dict[str, Any] = Field(default_factory=dict)
