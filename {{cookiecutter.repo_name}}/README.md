@@ -1,3 +1,4 @@
+# We use dot env file + pydantic settings class as project settings
 # Loguru usage example
 ```python
 from loguru import logger
