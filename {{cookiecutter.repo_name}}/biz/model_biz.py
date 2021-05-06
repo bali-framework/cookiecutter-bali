@@ -7,12 +7,12 @@ from sqlalchemy.sql.functions import func
 
 from consts import ALWAYS_EXCLUDE
 
-__all__ = ["ModelBiz", "clear_system_field"]
-_SYSTEM_FIELD = ("id", "uuid", "created_time", "updated_time")
+__all__ = ["ModelBiz", "clear_readonly_fields"]
+READONLY_FIELDS = ("id", "uuid", "created_time", "updated_time")
 
 
-def clear_system_field(data: Dict) -> Dict:
-    return {k: v for k, v in data.items() if k not in _SYSTEM_FIELD}
+def clear_readonly_fields(data: Dict) -> Dict:
+    return {k: v for k, v in data.items() if k not in READONLY_FIELDS}
 
 
 class ModelBiz:
@@ -25,7 +25,7 @@ class ModelBiz:
             cls.model_schema = model_to_schema(cls.model, exclude=ALWAYS_EXCLUDE)
 
     def create(self, create: BaseModel) -> db.BaseModel:
-        create_data = clear_system_field(create.dict(exclude_unset=True))
+        create_data = clear_readonly_fields(create.dict(exclude_unset=True))
         model = self.model(**create_data)
         db.session.add(model)
         db.session.commit()
@@ -38,7 +38,7 @@ class ModelBiz:
 
     def patch(self, uuid: str, patch: BaseModel) -> db.BaseModel:
         model = self.retrieve(uuid)
-        patch_data = clear_system_field(patch.dict(exclude_unset=True))
+        patch_data = clear_readonly_fields(patch.dict(exclude_unset=True))
         for k, v in patch_data.items():
             setattr(model, k, v)
         db.session.add(model)
