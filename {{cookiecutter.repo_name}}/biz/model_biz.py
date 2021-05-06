@@ -22,11 +22,13 @@ def flat_data(data: Dict) -> Dict:
     return data
 
 
-clean: Callable[[Dict], Dict] = compose(*reversed([
+clean_steps = (
     clear_readonly_fields,
     flat_data,
     clear_readonly_fields,
-]))
+)
+
+clean: Callable[[Dict], Dict] = compose(*reversed(clean_steps))
 
 
 class ModelBiz:
