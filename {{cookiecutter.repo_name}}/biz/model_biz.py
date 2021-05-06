@@ -1,3 +1,4 @@
+import math
 from typing import Type, Dict, Callable
 
 from bali.db import db
@@ -7,9 +8,10 @@ from sqlalchemy.sql.functions import func
 from toolz import compose
 
 from consts import ALWAYS_EXCLUDE
+from helpers.dj_to_sqla import dj_lookup_to_sqla, dj_ordering_to_sqla
 
 __all__ = ["ModelBiz", "clean"]
-READONLY_FIELDS = ("id", "uuid", "created_time", "updated_time")
+READONLY_FIELDS = ("id", "uuid", "created_time", "updated_time", "limit", "offset", "ordering")
 
 
 def clear_readonly_fields(data: Dict) -> Dict:
@@ -65,16 +67,30 @@ class ModelBiz:
     def retrieve(self, uuid: str) -> db.BaseModel:
         return db.session.query(self.model).filter(self.model.uuid == uuid).one()
 
-    def list(self, filters: BaseModel):
+    def _filtered_query(self, filters: BaseModel):
         q = db.session.query(self.model)
-        filters_data = filters.dict(exclude_defaults=True)
-        if filters_data:
-            q = q.filter_by(**filters_data)
+        for k, v in clean(filters.dict(exclude_defaults=True)).items():
+            op, col_name = dj_lookup_to_sqla(k)
+            q = q.filter(op(getattr(self.model, col_name), v))
+
+        return q
+
+    def list(self, filters: BaseModel):
+        q = self._filtered_query(filters)
+
+        ordering = getattr(filters, "ordering", None)
+        if ordering is not None:
+            q = q.order_by(*map(dj_ordering_to_sqla, ordering))
+
+        limit = getattr(filters, "limit", None)
+        if limit is not None and not math.isinf(limit):
+            q = q.limit(limit)
+
+        offset = getattr(filters, "offset", None)
+        if offset is not None:
+            q = q.offset(offset)
+
         return q
 
     def count(self, filters: BaseModel) -> int:
-        q = db.session.query(func.count(self.model.id))
-        filters_data = filters.dict(exclude_defaults=True)
-        if filters_data:
-            q = q.filter_by(**filters_data)
-        return q.scalar()
+        return self._filtered_query(filters).with_entities(func.count(self.model.id)).scalar()

@@ -1,3 +1,4 @@
+import math
 from typing import Any, Dict, List
 
 from pydantic import BaseModel, Field
@@ -20,10 +21,10 @@ class ItemResponse(BaseModel):
 
 
 class ListRequest(BaseModel):
-    filters: Dict[str, Any] = Field(default_factory=dict)
-    offset: int = Field(default_factory=int)
-    limit: int = Field(default_factory=int)
-    ordering: List[str] = Field(default_factory=list)
+    data: Dict[str, Any] = Field(default_factory=dict)
+    limit: int = Field(default=math.inf, ge=0)
+    offset: int = Field(default=0, ge=0)
+    ordering: List[str] = Field(default=["id"])
 
 
 class ListResponse(BaseModel):
