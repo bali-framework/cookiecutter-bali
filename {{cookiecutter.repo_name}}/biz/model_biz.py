@@ -40,9 +40,6 @@ class ModelBiz:
 
     def create(self, create: BaseModel) -> db.BaseModel:
         create_data = clean(create.dict(exclude_unset=True))
-        if len(create_data) == 1 and isinstance(create_data.get("data"), dict):
-            create_data = create_data["data"]
-
         model = self.model(**create_data)
         db.session.add(model)
         db.session.commit()

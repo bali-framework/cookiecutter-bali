@@ -4,3 +4,4 @@ bali-core==1.5.0
 loguru>=0.5.3
 mq-http-sdk==1.0.3
 python-dotenv==0.15.0
+toolz==0.11.1
