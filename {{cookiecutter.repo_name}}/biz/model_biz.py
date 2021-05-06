@@ -1,18 +1,32 @@
-from typing import Type, Dict
+from typing import Type, Dict, Callable
 
 from bali.db import db
 from bali.schema import model_to_schema
 from pydantic import BaseModel
 from sqlalchemy.sql.functions import func
+from toolz import compose
 
 from consts import ALWAYS_EXCLUDE
 
-__all__ = ["ModelBiz", "clear_readonly_fields"]
+__all__ = ["ModelBiz", "clean"]
 READONLY_FIELDS = ("id", "uuid", "created_time", "updated_time")
 
 
 def clear_readonly_fields(data: Dict) -> Dict:
     return {k: v for k, v in data.items() if k not in READONLY_FIELDS}
+
+
+def flat_data(data: Dict) -> Dict:
+    if len(data) == 1 and isinstance(data.get("data"), dict):
+        data = data["data"]
+    return data
+
+
+clean: Callable[[Dict], Dict] = compose(*reversed([
+    clear_readonly_fields,
+    flat_data,
+    clear_readonly_fields,
+]))
 
 
 class ModelBiz:
@@ -25,7 +39,10 @@ class ModelBiz:
             cls.model_schema = model_to_schema(cls.model, exclude=ALWAYS_EXCLUDE)
 
     def create(self, create: BaseModel) -> db.BaseModel:
-        create_data = clear_readonly_fields(create.dict(exclude_unset=True))
+        create_data = clean(create.dict(exclude_unset=True))
+        if len(create_data) == 1 and isinstance(create_data.get("data"), dict):
+            create_data = create_data["data"]
+
         model = self.model(**create_data)
         db.session.add(model)
         db.session.commit()
@@ -38,7 +55,7 @@ class ModelBiz:
 
     def patch(self, uuid: str, patch: BaseModel) -> db.BaseModel:
         model = self.retrieve(uuid)
-        patch_data = clear_readonly_fields(patch.dict(exclude_unset=True))
+        patch_data = clean(patch.dict(exclude_unset=True))
         for k, v in patch_data.items():
             setattr(model, k, v)
         db.session.add(model)
