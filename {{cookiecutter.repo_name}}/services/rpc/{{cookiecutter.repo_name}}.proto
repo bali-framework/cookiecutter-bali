@@ -16,7 +16,7 @@ message GetRequest {
 }
 
 message ListRequest {
-  google.protobuf.Struct filters = 1;
+  google.protobuf.Struct data = 1;
   int32 offset = 2;
   int32 limit = 3;
   repeated string ordering = 4;

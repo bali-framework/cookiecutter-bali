@@ -75,7 +75,7 @@ class ModelBiz:
 
         return q
 
-    def list(self, filters: BaseModel):
+    def bulk_retrieve(self, filters: BaseModel):
         q = self._filtered_query(filters)
 
         ordering = getattr(filters, "ordering", None)
