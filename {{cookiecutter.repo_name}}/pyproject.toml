@@ -16,6 +16,9 @@ testpaths = ["tests"]
 branch = true
 omit = ["tests/*", "alembic/*"]
 
+[tool.coverage.report]
+omit = [".tox/*"]
+
 [tool.tox]
 legacy_tox_ini = """
 [tox]
@@ -24,7 +27,9 @@ envlist = py37
 
 [testenv]
 deps = -rrequirements_dev.txt
-commands = pytest
+commands =
+    coverage run -m pytest -v
+    coverage report
 setenv =
     PYTHONPATH = {toxinidir}/clients/intermediates:{toxinidir}/services/rpc
 """
