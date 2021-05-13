@@ -1,13 +1,16 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 from conf import settings
 from services.http.urls import routers
 
 app = FastAPI(title=settings.TITLE)
+
+root_router = APIRouter(prefix="/api/v1")
 for i in routers:
-    app.include_router(i, tags=[i.prefix.lstrip("/").title()])
+    root_router.include_router(i, tags=[i.prefix.lstrip("/").title()])
+app.include_router(root_router)
 
 app.add_middleware(
     CORSMiddleware,
