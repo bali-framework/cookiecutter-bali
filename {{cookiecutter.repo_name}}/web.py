@@ -7,7 +7,7 @@ from services.http.urls import routers
 
 app = FastAPI(title=settings.TITLE)
 
-root_router = APIRouter(prefix="/api/v1{{cookiecutter.repo_name}}")
+root_router = APIRouter(prefix="/api/v1/{{cookiecutter.repo_name}}")
 for i in routers:
     root_router.include_router(i, tags=[i.prefix.lstrip("/").title()])
 app.include_router(root_router)
