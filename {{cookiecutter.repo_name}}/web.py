@@ -5,9 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from conf import settings
 from services.http.urls import routers
 
-app = FastAPI(title=settings.TITLE)
+app = FastAPI(
+    title=settings.TITLE,
+    docs_url="/{{cookiecutter.repo_name}}/docs",
+    openapi_url="/{{cookiecutter.repo_name}}/openapi.json",
+)
 
-root_router = APIRouter(prefix="/api/v1/{{cookiecutter.repo_name}}")
+root_router = APIRouter(prefix="/{{cookiecutter.repo_name}}/api/v1")
 for i in routers:
     root_router.include_router(i, tags=[i.prefix.lstrip("/").title()])
 app.include_router(root_router)
