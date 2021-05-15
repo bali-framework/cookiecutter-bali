@@ -22,11 +22,9 @@ class AwareDateTime(TypeDecorator):
         return value
 
     def process_bind_param(self, value, dialect):
-        if value is not None:
-            if timezone.is_naive(value):
-                value = timezone.make_aware(value)
-
+        if value is not None and timezone.is_aware(value):
             value = timezone.make_naive(value, timezone=pytz.utc)
+
         return value
 
 
