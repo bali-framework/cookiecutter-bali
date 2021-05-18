@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_pagination import add_pagination
 
 from conf import settings
 from services.http.urls import routers
@@ -15,6 +16,7 @@ root_router = APIRouter(prefix="/{{cookiecutter.repo_name}}/api/v1")
 for i in routers:
     root_router.include_router(i, tags=[i.prefix.lstrip("/").title()])
 app.include_router(root_router)
+add_pagination(app)
 
 app.add_middleware(
     CORSMiddleware,
