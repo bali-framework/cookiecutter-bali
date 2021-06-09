@@ -1,6 +1,7 @@
 import os
 import sys
 from logging.config import fileConfig
+from pathlib import Path
 
 from alembic import context
 from bali.core import db
@@ -8,6 +9,8 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(str(Path.cwd() / "clients" / "intermediates"))
+sys.path.append(str(Path.cwd() / "services" / "rpc"))
 
 from conf import settings
 
