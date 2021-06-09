@@ -14,7 +14,7 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-omit = ["tests/*", "alembic/*"]
+omit = ["tests/*", "alembic/*", "clients/*"]
 
 [tool.coverage.report]
 omit = [".tox/*"]
