@@ -82,12 +82,12 @@ class ModelBiz:
         if ordering is not None:
             q = q.order_by(*map(dj_ordering_to_sqla, ordering))
 
-        limit = getattr(filters, "limit", None)
-        if limit is not None and not math.isinf(limit):
+        limit = getattr(filters, "limit", math.inf)
+        if limit and not math.isinf(limit):
             q = q.limit(limit)
 
-        offset = getattr(filters, "offset", None)
-        if offset is not None:
+        offset = getattr(filters, "offset", 0)
+        if offset:
             q = q.offset(offset)
 
         return q

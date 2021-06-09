@@ -9,7 +9,7 @@ known_third_party = ["fastapi", "pydantic", "starlette", "SQLAlchemy", "uvicorn"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-s"
+addopts = "-v -s -p no:warnings"
 testpaths = ["tests"]
 
 [tool.coverage.run]
@@ -29,7 +29,7 @@ envlist = py37
 [testenv]
 deps = -rrequirements_dev.txt
 commands =
-    coverage run -m pytest -v
+    coverage run -m pytest
     coverage report
 setenv =
     PYTHONPATH = {toxinidir}/clients/intermediates:{toxinidir}/services/rpc
