@@ -69,12 +69,7 @@ class ModelBiz:
 
     def _filtered_query(self, filters: BaseModel):
         q = db.session.query(self.model)
-        filter_data = clean(filters.dict(exclude_defaults=True))
-        schema = model_to_schema(
-            self.model,
-            exclude=self.model.get_fields() - filter_data.keys()
-        )
-        for k, v in schema(**filter_data).dict().items():
+        for k, v in clean(filters.dict(exclude_defaults=True)).items():
             op, col_name = dj_lookup_to_sqla(k)
             q = q.filter(op(getattr(self.model, col_name), v))
 
