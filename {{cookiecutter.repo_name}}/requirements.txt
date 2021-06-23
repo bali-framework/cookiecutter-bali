@@ -1,5 +1,5 @@
 alembic==1.5.4
-bali-core==2.0.5
+bali-core==2.0.0rc7
 loguru>=0.5.3
 mq-http-sdk==1.0.3
 python-dotenv==0.15.0
