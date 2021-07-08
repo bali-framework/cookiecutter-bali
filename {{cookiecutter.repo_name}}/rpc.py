@@ -1,3 +1,4 @@
+import logging
 from concurrent import futures
 
 import grpc
@@ -9,6 +10,7 @@ from services.rpc import {{cookiecutter.repo_name}}_pb2_grpc as pb2_grpc
 from services.rpc.service import Service
 
 def serve():
+    logging.basicConfig()
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers=settings.RPC_THREAD_POOL_SIZE),
         interceptors=[ProcessInterceptor()],
