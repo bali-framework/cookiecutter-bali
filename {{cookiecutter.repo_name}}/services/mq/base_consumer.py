@@ -2,6 +2,7 @@ import threading
 import time
 from typing import List, Union
 
+from bali.db import db
 from loguru import logger
 from mq_http_sdk.mq_client import MQClient, MQExceptionBase
 from mq_http_sdk.mq_consumer import Message
@@ -55,6 +56,8 @@ class BaseConsumer(threading.Thread):
                     else:
                         if self.need_ack:
                             receipt_handle_list.append(i.receipt_handle)
+                    finally:
+                        db.session.remove()
 
                 try:
                     self.consumer.ack_message(receipt_handle_list)
