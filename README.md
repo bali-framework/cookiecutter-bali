@@ -29,6 +29,27 @@ tox
 [![bali](https://github-readme-stats.vercel.app/api/pin/?username=JoshYuJump&repo=bali)](https://github.com/JoshYuJump/bali)
 [![bali-cli](https://github-readme-stats.vercel.app/api/pin/?username=JoshYuJump&repo=bali-cli)](https://github.com/JoshYuJump/bali-cli)
 
+### SQLAlchemy field tracking example
+```python
+from bali.db import AwareDateTime, db
+from bali.utils import timezone
+from sqlalchemy import BigInteger, Column
+
+from models.field_tracker import FieldTracker
+
+
+class Example(db.BaseModel):
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    example_time_1 = Column(AwareDateTime, default=timezone.now)
+    example_time_2 = Column(AwareDateTime, default=timezone.now)
+
+
+FieldTracker.listen_for(
+    Example.example_time_1,
+    Example.example_time_2,
+)
+```
+
 ### MQ consumer example
 ```python
 from loguru import logger
@@ -58,27 +79,6 @@ class Example(BaseTopic):
     class Schema(BaseModel):
         uuid: str
         user_uuid: str
-```
-
-### SQLAlchemy field tracking example
-```python
-from bali.db import AwareDateTime, db
-from bali.utils import timezone
-from sqlalchemy import BigInteger, Column
-
-from models.field_tracker import FieldTracker
-
-
-class Example(db.BaseModel):
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
-    example_time_1 = Column(AwareDateTime, default=timezone.now)
-    example_time_2 = Column(AwareDateTime, default=timezone.now)
-
-
-FieldTracker.listen_for(
-    Example.example_time_1,
-    Example.example_time_2,
-)
 ```
 
 ### Biz example (Biz is used to realize the business)
