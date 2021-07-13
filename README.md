@@ -29,6 +29,12 @@ tox
 [![bali](https://github-readme-stats.vercel.app/api/pin/?username=JoshYuJump&repo=bali)](https://github.com/JoshYuJump/bali)
 [![bali-cli](https://github-readme-stats.vercel.app/api/pin/?username=JoshYuJump&repo=bali-cli)](https://github.com/JoshYuJump/bali-cli)
 
+### By default, bali is run at Indonesia, but you can change this in .env file
+```dotenv
+LOCALE=zh_CN.UTF-8
+TZ=Asia/Shanghai
+```
+
 ### SQLAlchemy field tracking example
 ```python
 from bali.db import AwareDateTime, db

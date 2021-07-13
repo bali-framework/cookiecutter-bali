@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     TITLE: str = "{{cookiecutter.repo_name}}"
     LOCALE: str
+    TZ: str
     DATABASE: str
     RPC_PORT: int
     RPC_THREAD_POOL_SIZE: int
