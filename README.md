@@ -19,6 +19,8 @@ tox
 * RocketMQ
 * gRPC
 
+#### tip: bali is not design for aio project
+
 ### Hooks in pre commit
 * pre-commit-hooks
 * black
