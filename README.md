@@ -25,6 +25,10 @@ tox
 * isort
 * flake8
 
+### Related Projects
+[![bali](https://github-readme-stats.vercel.app/api/pin/?username=JoshYuJump&repo=bali)](https://github.com/JoshYuJump/bali)
+[![bali-cli](https://github-readme-stats.vercel.app/api/pin/?username=JoshYuJump&repo=bali-cli)](https://github.com/JoshYuJump/bali-cli)
+
 ### MQ consumer example
 ```python
 from loguru import logger
@@ -56,7 +60,7 @@ class Example(BaseTopic):
         user_uuid: str
 ```
 
-### SQLAlchemy field tracking
+### SQLAlchemy field tracking example
 ```python
 from bali.db import AwareDateTime, db
 from bali.utils import timezone
@@ -75,4 +79,14 @@ FieldTracker.listen_for(
     Example.example_time_1,
     Example.example_time_2,
 )
+```
+
+### Biz example (Biz is used to realize the business)
+```python
+from biz.model_biz import ModelBiz
+from models.example import Example
+
+
+class ExampleBiz(ModelBiz):
+    model = Example
 ```
