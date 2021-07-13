@@ -59,6 +59,7 @@ class Example(BaseTopic):
 ### SQLAlchemy field tracking
 ```python
 from bali.db import AwareDateTime, db
+from bali.utils import timezone
 from sqlalchemy import BigInteger, Column
 
 from models.field_tracker import FieldTracker
@@ -66,8 +67,8 @@ from models.field_tracker import FieldTracker
 
 class Example(db.BaseModel):
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    example_time_1 = Column(AwareDateTime)
-    example_time_2 = Column(AwareDateTime)
+    example_time_1 = Column(AwareDateTime, default=timezone.now)
+    example_time_2 = Column(AwareDateTime, default=timezone.now)
 
 
 FieldTracker.listen_for(
