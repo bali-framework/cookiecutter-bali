@@ -1,4 +1,4 @@
-ALWAYS_EXCLUDE = ["id", "is_active"]
-EXCLUDE_FOR_API = [*ALWAYS_EXCLUDE, "uuid", "created_time", "updated_time"]
-UUID_PATH = "/{uuid}"
+ALWAYS_EXCLUDE = {"id", "is_active"}
+EXCLUDE_FOR_API = {*ALWAYS_EXCLUDE, "{{cookiecutter.business_key}}", "created_time", "updated_time"}
+BUSINESS_KEY_PATH = "/{" + "{{cookiecutter.business_key}}" + "}"
 EMPTY_PATH = ""

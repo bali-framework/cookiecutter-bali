@@ -6,7 +6,7 @@ from uuid import UUID
 from bali.db import AwareDateTime, db
 from bali.utils import timezone
 from loguru import logger
-from sqlalchemy import JSON, Column, Integer, String
+from sqlalchemy import JSON, BigInteger, Column, String
 from sqlalchemy.event import listens_for
 from sqlalchemy.util.langhelpers import symbol
 
@@ -15,12 +15,12 @@ __all__ = ["FieldTracker"]
 
 class FieldTracker(db.BaseModel):
     is_active = None
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
     created_time = Column(AwareDateTime, default=timezone.now)
     updated_time = Column(AwareDateTime, default=timezone.now, onupdate=timezone.now)
 
     table = Column(String(64), nullable=False)
-    row = Column(String(32), nullable=False)
+    row = Column(BigInteger, nullable=False)
     field = Column(String(64), nullable=False)
     old_value = Column(JSON)
     new_value = Column(JSON)

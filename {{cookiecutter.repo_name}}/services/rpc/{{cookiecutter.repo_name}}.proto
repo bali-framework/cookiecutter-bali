@@ -12,7 +12,7 @@ service {{cookiecutter.repo_name|title}}Service {
 
 // Generic
 message GetRequest {
-  string uuid = 1;
+  string {{cookiecutter.business_key}} = 1;
 }
 
 message ListRequest {
@@ -27,12 +27,12 @@ message CreateRequest {
 }
 
 message UpdateRequest {
-  string uuid = 1;
+  string {{cookiecutter.business_key}} = 1;
   google.protobuf.Struct data = 2;
 }
 
 message DeleteRequest {
-  string uuid = 1;
+  string {{cookiecutter.business_key}} = 1;
 }
 
 message ItemResponse {

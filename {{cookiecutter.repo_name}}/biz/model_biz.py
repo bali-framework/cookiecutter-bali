@@ -11,7 +11,7 @@ from consts import ALWAYS_EXCLUDE
 from helpers.dj_to_sqla import dj_lookup_to_sqla, dj_ordering_to_sqla
 
 __all__ = ["ModelBiz", "clean"]
-READONLY_FIELDS = ("id", "uuid", "created_time", "updated_time", "limit", "offset", "ordering")
+READONLY_FIELDS = {"id", "{{cookiecutter.business_key}}", "created_time", "updated_time", "limit", "offset", "ordering"}
 
 
 def clear_readonly_fields(data: Dict) -> Dict:
@@ -40,7 +40,7 @@ class ModelBiz:
     def __init_subclass__(cls, **kwargs):
         assert cls.model is not None, f"{cls.__name__} can not be None"
         if cls.model_schema is None:
-            cls.model_schema = model_to_schema(cls.model, exclude=ALWAYS_EXCLUDE)
+            cls.model_schema = model_to_schema(cls.model, exclude=list(ALWAYS_EXCLUDE))
 
     def create(self, create: BaseModel) -> db.BaseModel:
         create_data = clean(create.dict(exclude_unset=True))
@@ -49,13 +49,13 @@ class ModelBiz:
         db.session.commit()
         return model
 
-    def delete(self, uuid: str) -> None:
-        model = self.retrieve(uuid)
+    def delete(self, {{cookiecutter.business_key}}: str) -> None:
+        model = self.retrieve({{cookiecutter.business_key}})
         db.session.delete(model)
         db.session.commit()
 
-    def patch(self, uuid: str, patch: BaseModel) -> db.BaseModel:
-        model = self.retrieve(uuid)
+    def patch(self, {{cookiecutter.business_key}}: str, patch: BaseModel) -> db.BaseModel:
+        model = self.retrieve({{cookiecutter.business_key}})
         patch_data = clean(patch.dict(exclude_unset=True))
         for k, v in patch_data.items():
             setattr(model, k, v)
@@ -64,8 +64,8 @@ class ModelBiz:
         db.session.refresh(model)
         return model
 
-    def retrieve(self, uuid: str) -> db.BaseModel:
-        return db.session.query(self.model).filter(self.model.uuid == uuid).one()
+    def retrieve(self, {{cookiecutter.business_key}}: str) -> db.BaseModel:
+        return db.session.query(self.model).filter(self.model.{{cookiecutter.business_key}} == {{cookiecutter.business_key}}).one()
 
     def _filtered_query(self, filters: BaseModel):
         q = db.session.query(self.model)

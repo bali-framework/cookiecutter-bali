@@ -9,11 +9,11 @@ class CreateRequest(BaseModel):
 
 
 class DeleteRequest(BaseModel):
-    uuid: str = Field(default_factory=str)
+    {{cookiecutter.business_key}}: str = Field(default_factory=str)
 
 
 class GetRequest(BaseModel):
-    uuid: str = Field(default_factory=str)
+    {{cookiecutter.business_key}}: str = Field(default_factory=str)
 
 
 class ItemResponse(BaseModel):
@@ -37,5 +37,5 @@ class ResultResponse(BaseModel):
 
 
 class UpdateRequest(BaseModel):
-    uuid: str = Field(default_factory=str)
+    {{cookiecutter.business_key}}: str = Field(default_factory=str)
     data: Dict[str, Any] = Field(default_factory=dict)
