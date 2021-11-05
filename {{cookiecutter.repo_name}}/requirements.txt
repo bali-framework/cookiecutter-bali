@@ -3,5 +3,6 @@ bali-core==2.0.5
 loguru>=0.5.3
 mq-http-sdk==1.0.3
 python-dotenv==0.15.0
+tenacity==7.0.0
 toolz==0.11.1
 typer==0.3.2
