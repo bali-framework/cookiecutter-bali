@@ -13,6 +13,17 @@ WORKDIR /opt/project
 
 RUN apt-get clean \
     && apt-get update \
-    && apt-get install -y tzdata locales-all vim tini \
-    && pip install supervisor py-spy \
+    && apt-get install -y tzdata locales-all vim tini gdb \
+    && pip install supervisor py-spy pyrasite objgraph \
     && pip install -r ${DEPS}.txt
+
+# Run DB migrations
+RUN echo '#! /usr/bin/env sh ' > prestart.sh && \
+    echo '# Run migrate firstly... ' >> prestart.sh && \
+    echo 'make migrate; ' >> prestart.sh && \
+    echo '# Run migrations... ' >> prestart.sh && \
+    echo 'make migration; ' >> prestart.sh && \
+    echo '# Let the DB ready' >> prestart.sh && \
+    echo 'sleep 2; ' >> prestart.sh && \
+    echo '# Run migrate secondly...' >> prestart.sh && \
+    echo 'make migrate; ' >> prestart.sh
