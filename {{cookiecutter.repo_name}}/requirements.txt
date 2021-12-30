@@ -1,8 +1,9 @@
 alembic==1.5.4
-bali-core==2.0.5
+bali-core==2.1.8
 loguru>=0.5.3
-mq-http-sdk==1.0.3
+git+https://github.com.cnpmjs.org/Ed-XCF/mq-http-python-sdk.git@1.0.6#egg=mq-http-sdk
 python-dotenv==0.15.0
 tenacity==7.0.0
 toolz==0.11.1
 typer==0.3.2
+typing-extensions==3.7.4.3
