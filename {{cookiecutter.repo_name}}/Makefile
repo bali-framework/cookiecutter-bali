@@ -1,11 +1,11 @@
 env:
-	pip3 install wheel pre-commit git+https://github.com/Ed-XCF/bali-cli.git@v0.5.11#egg=bali-cli
-	pre-commit install
 	rm -rf venv
 	python3 -m venv venv
 	. venv/bin/activate \
 	&& python3 -m pip install --upgrade pip \
-	&& pip3 install -r requirements_dev.txt
+	&& pip3 install wheel pre-commit git+https://github.com/Ed-XCF/bali-cli.git@v0.5.11#egg=bali-cli
+	&& pip3 install -r requirements_dev.txt \
+	&& pre-commit install
 
 docker:
 	pip3 install wheel pre-commit git+https://github.com/Ed-XCF/bali-cli.git@v0.5.11#egg=bali-cli
