@@ -1,27 +1,36 @@
 import threading
-from typing import Optional
 
 
-class LoginUser:
-    class _LoginUser(threading.local):
-        {{cookiecutter.business_key}}: Optional[str] = None
+class _Global(threading.local):
+    example_attr: str = None
 
-    _login_user = _LoginUser()
+
+_global = _Global()
+
+
+class _GlobalProxy:
+    attr = None
+
+    def __init_subclass__(cls, **kwargs):
+        assert hasattr(_global, cls.attr)
 
     @classmethod
-    def set_login_user_{{cookiecutter.business_key}}(cls, user_{{cookiecutter.business_key}}: Optional[str]) -> None:
-        cls._login_user.{{cookiecutter.business_key}} = user_{{cookiecutter.business_key}}
+    def set(cls, data):
+        setattr(_global, cls.attr, data)
 
     @classmethod
-    def get_login_user_{{cookiecutter.business_key}}(cls) -> str:
-        assert cls._login_user.{{cookiecutter.business_key}} is not None, "login user {{cookiecutter.business_key}} is unset"
-        return cls._login_user.{{cookiecutter.business_key}}
+    def get(cls):
+        return getattr(_global, cls.attr)
 
-    def __init__(self, user):
-        self.user = user
+    def __init__(self, data):
+        self.set(data)
 
     def __enter__(self):
-        self.set_login_user_{{cookiecutter.business_key}}(self.user)
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.set_login_user_{{cookiecutter.business_key}}(None)
+        self.set(None)
+
+
+class ExampleAttr(_GlobalProxy):
+    attr = "example_attr"
