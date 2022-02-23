@@ -4,10 +4,12 @@ from typing import Type, Dict, Callable
 from bali.db import db
 from bali.schema import model_to_schema
 from pydantic import BaseModel
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.functions import func
 from toolz import compose
 
 from consts import ALWAYS_EXCLUDE
+from schemas import generic_rpc as grs
 from helpers.dj_to_sqla import dj_lookup_to_sqla, dj_ordering_to_sqla
 
 __all__ = ["ModelBiz", "clean"]
@@ -93,4 +95,26 @@ class ModelBiz:
         return q
 
     def count(self, filters: BaseModel) -> int:
-        return self._filtered_query(filters).with_entities(func.count(self.model.id)).scalar()
+        return int(
+            self._filtered_query(filters)
+            .with_entities(func.count(self.model.id))
+            .scalar()
+            or 0
+        )
+
+    def bulk_create(
+        self, create: grs.BulkCreateRequest
+    ) -> Optional[List[db.BaseModel]]:
+        objs = [self.model(**self.model_schema(**i).dict()) for i in create.data]
+        if not objs:
+            return
+
+        try:
+            db.session.bulk_save_objects(objs)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            raise
+        else:
+            return objs
+

@@ -39,3 +39,7 @@ class ResultResponse(BaseModel):
 class UpdateRequest(BaseModel):
     {{cookiecutter.business_key}}: str = Field(default_factory=str)
     data: Dict[str, Any] = Field(default_factory=dict)
+
+
+class BulkCreateRequest(BaseModel):
+    data: List[Dict[str, Any]] = Field(default_factory=list)
