@@ -90,6 +90,26 @@ class Example(BaseTopic):
         user_uuid: str
 ```
 
+### MQ transactional-message example
+```python
+from pydantic import BaseModel
+
+from helpers.base_mq_topic import TransactionTopic
+
+
+class ActivationTransaction(TransactionTopic):
+    group = "example"
+    topic = "transactional-message"
+    tag = "example-activation"
+
+    class Schema(BaseModel):
+        content: str
+
+
+with ActivationTransaction(content="wow"):
+    pass
+```
+
 ### Biz example (Biz is used to realize the business)
 ```python
 from biz.model_biz import ModelBiz
