@@ -1,16 +1,15 @@
 import math
-from typing import Type, Dict, Callable
+from typing import Type, Dict
 
 from bali.db import db
 from bali.schema import model_to_schema
+from bali.db.operators import dj_lookup_to_sqla, dj_ordering_to_sqla
 from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.functions import func
-from toolz import compose
 
 from consts import ALWAYS_EXCLUDE
-from schemas import generic_rpc as grs
-from helpers.dj_to_sqla import dj_lookup_to_sqla, dj_ordering_to_sqla
+from schemas.generic_rpc import BulkCreateRequest
 
 __all__ = ["ModelBiz", "clean"]
 READONLY_FIELDS = {"id", "{{cookiecutter.business_key}}", "created_time", "updated_time", "limit", "offset", "ordering"}
@@ -32,7 +31,11 @@ clean_steps = (
     clear_readonly_fields,
 )
 
-clean: Callable[[Dict], Dict] = compose(*reversed(clean_steps))
+
+def clean(data: Dict) -> Dict:
+    for i in clean_steps:
+        data = i(data)
+    return data
 
 
 class ModelBiz:
@@ -102,12 +105,10 @@ class ModelBiz:
             or 0
         )
 
-    def bulk_create(
-        self, create: grs.BulkCreateRequest
-    ) -> Optional[List[db.BaseModel]]:
+    def bulk_create(self, create: BulkCreateRequest) -> List[db.BaseModel]:
         objs = [self.model(**self.model_schema(**i).dict()) for i in create.data]
         if not objs:
-            return
+            return []
 
         try:
             db.session.bulk_save_objects(objs)
