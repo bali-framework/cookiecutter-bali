@@ -17,3 +17,7 @@ migration:
 
 migrate:
 	alembic upgrade head
+
+clean-git:
+	git branch --merged | egrep -v "master|main|test|dev|develop" | xargs git branch -d
+	git fetch -p origin && git branch -r --merged | egrep -v "master|main|test|dev|develop" | sed 's/origin\///' | xargs git push origin -d
