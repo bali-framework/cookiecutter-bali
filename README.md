@@ -106,19 +106,6 @@ with ActivationTransaction(content="wow"):
     pass
 ```
 
-### sqlalchemy redis property example
-```python
-from bali.db import db
-
-from helpers.redis_property import redis_property
-
-
-class BaliExample(db.BaseModel):
-    @redis_property
-    def is_awesome(self):
-        return True
-```
-
 ### Biz example (Biz is used to realize the business)
 ```python
 from biz.model_biz import ModelBiz
