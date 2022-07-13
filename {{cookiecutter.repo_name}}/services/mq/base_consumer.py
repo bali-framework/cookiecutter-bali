@@ -9,7 +9,7 @@ from mq_http_sdk.mq_consumer import Message
 
 from conf import settings
 
-__all__ = ["BaseConsumer"]
+__all__ = ["BaseConsumer", "BaseHalfMessageConsumer"]
 
 
 class BaseConsumer(threading.Thread):
@@ -25,17 +25,22 @@ class BaseConsumer(threading.Thread):
         assert cls.batch_size <= 16, "max batch size is 16"
         assert cls.wait_seconds <= 30, "max wait seconds is 30"
 
-    def __init__(self):
+    def __init__(self, stop_event: threading.Event):
         super().__init__()
-        client = MQClient(
-            settings.MQ_HOST, settings.MQ_ACCESS_ID, settings.MQ_ACCESS_KEY
+        self.stop_event = stop_event
+        self.client = MQClient(
+            settings.MQ_HOST,
+            settings.MQ_ACCESS_ID,
+            settings.MQ_ACCESS_KEY,
+            logger=logger,
         )
-        self.consumer = client.get_consumer(
+        self.consumer = self.client.get_consumer(
             settings.MQ_INSTANCE, self.topic, self.group, self.message_tag
         )
+        logger.info("Start consume topic {}", self.topic)
 
     def run(self) -> None:
-        while True:
+        while not self.stop_event.is_set():
             try:
                 received: List[Message] = self.consumer.consume_message(
                     self.batch_size, self.wait_seconds
@@ -46,7 +51,7 @@ class BaseConsumer(threading.Thread):
             else:
                 receipt_handle_list = []
                 for i in received:
-                    logger.debug("Received msg: {}", vars(i))
+                    logger.info("Received msg: {}", vars(i))
                     try:
                         self.onmessage(i)
                     except Exception as e:
@@ -67,5 +72,63 @@ class BaseConsumer(threading.Thread):
             finally:
                 time.sleep(self.consume_interval)
 
+        logger.info("Stop consume topic {}", self.topic)
+
     def onmessage(self, msg: Message) -> None:
         raise NotImplementedError()
+
+
+class BaseHalfMessageConsumer(threading.Thread):
+    topic: str
+    group: str
+    batch_size: int = 16
+    wait_seconds: int = 30
+    consume_interval: Union[int, float] = 1
+
+    def __init_subclass__(cls, **kwargs):
+        assert cls.batch_size <= 16, "max batch size is 16"
+        assert cls.wait_seconds <= 30, "max wait seconds is 30"
+
+    def __init__(self, stop_event: threading.Event):
+        super().__init__()
+        self.stop_event = stop_event
+        self.client = MQClient(
+            settings.MQ_HOST,
+            settings.MQ_ACCESS_ID,
+            settings.MQ_ACCESS_KEY,
+            logger=logger,
+        )
+        self._trans_producer = self.client.get_trans_producer(
+            settings.MQ_INSTANCE, self.topic, self.group
+        )
+        logger.info("Start consume half message topic {}", self.topic)
+
+    def onmessage(self, msg: Message):
+        raise NotImplementedError()
+
+    def commit(self, msg: Message):
+        return self._trans_producer.commit(msg.receipt_handle)
+
+    def rollback(self, msg: Message):
+        return self._trans_producer.rollback(msg.receipt_handle)
+
+    def run(self) -> None:
+        while not self.stop_event.is_set():
+            try:
+                received: List[Message] = self._trans_producer.consume_half_message(
+                    self.batch_size, self.wait_seconds
+                )
+            except MQExceptionBase as e:
+                if e.type != "MessageNotExist":
+                    logger.exception("Consume half msg failed: {}", repr(e))
+            else:
+                for i in received:
+                    logger.info("Received half msg: {}", vars(i))
+                    try:
+                        self.onmessage(i)
+                    except Exception as e:
+                        logger.exception(
+                            "Exception raised when handle half msg: {}", repr(e)
+                        )
+                    finally:
+                        db.session.remove()
